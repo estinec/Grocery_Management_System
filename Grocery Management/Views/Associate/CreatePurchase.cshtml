@@ -1,0 +1,65 @@
+@model Grocery_Management.Models.Purchase
+
+<h2>Record New Sale</h2>
+
+<form asp-action="CreatePurchase" method="post">
+    <div class="mb-3">
+        <label class="form-label">Select Product</label>
+        <select id="productSelect" asp-for="ProductId" class="form-select" required>
+            <option value="">-- Choose Product --</option>
+            @foreach (var p in (IEnumerable<Grocery_Management.Models.Product>)ViewBag.Products)
+            {
+                <option value="@p.Id">@p.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Category</label>
+        <input type="text" id="categoryDisplay" class="form-control" readonly disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Unit Price ($)</label>
+        <input type="text" id="unitPriceDisplay" class="form-control" readonly disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Quantity</label>
+        <input type="number" id="quantityInput" asp-for="Quantity" min="1" value="1" class="form-control" required />
+        <span asp-validation-for="Quantity" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Total Price ($)</label>
+        <input type="text" id="totalPriceDisplay" class="form-control fw-bold" readonly />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Sale</button>
+</form>
+
+@section Scripts {
+    <script>
+        let currentUnitPrice = 0;
+
+        document.getElementById('productSelect').addEventListener('change', async function() {
+            const id = this.value;
+            if (!id) return;
+
+            const res = await fetch(`/Associate/GetProductDetails/${id}`);
+            const data = await res.json();
+
+            document.getElementById('categoryDisplay').value = data.category;
+            document.getElementById('unitPriceDisplay').value = data.unitPrice.toFixed(2);
+            currentUnitPrice = data.unitPrice;
+            calculateTotal();
+        });
+
+        document.getElementById('quantityInput').addEventListener('input', calculateTotal);
+
+        function calculateTotal() {
+            const qty = parseInt(document.getElementById('quantityInput').value) || 0;
+            document.getElementById('totalPriceDisplay').value = (currentUnitPrice * qty).toFixed(2);
+        }
+    </script>
+}

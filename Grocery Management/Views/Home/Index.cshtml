@@ -1,94 +1,41 @@
 ﻿@{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Welcome to FreshMarket";
 }
 
-<div class="p-4 mb-4 bg-dark text-white rounded-3 shadow-sm border border-secondary">
-    <div class="container-fluid py-2">
-        <h1 class="display-6 fw-bold">Grocery Management System</h1>
-        <p class="col-md-8 fs-5 text-light opacity-75">Overview of real-time inventory, stock alerts, and quick role actions.</p>
-    </div>
-</div>
-
-<div class="row g-4 mb-4">
-    <div class="col-md-3">
-        <div class="card border-0 shadow-sm bg-light">
-            <div class="card-body border-start border-4 border-primary rounded-start">
-                <div class="text-muted text-uppercase fw-semibold small">Total Products</div>
-                <div class="display-6 fw-bold text-dark mt-1">@ViewBag.TotalProducts</div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card border-0 shadow-sm bg-light">
-            <div class="card-body border-start border-4 border-info rounded-start">
-                <div class="text-muted text-uppercase fw-semibold small">Categories</div>
-                <div class="display-6 fw-bold text-dark mt-1">@ViewBag.TotalCategories</div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card border-0 shadow-sm bg-light">
-            <div class="card-body border-start border-4 border-danger rounded-start">
-                <div class="text-muted text-uppercase fw-semibold small">Low Stock Items</div>
-                <div class="display-6 fw-bold text-danger mt-1">@ViewBag.LowStockCount</div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card border-0 shadow-sm bg-light">
-            <div class="card-body border-start border-4 border-success rounded-start">
-                <div class="text-muted text-uppercase fw-semibold small">Total Sales</div>
-                <div class="display-6 fw-bold text-dark mt-1">@ViewBag.RecentSalesCount</div>
-            </div>
+<div class="p-5 mb-4 bg-light rounded-3 shadow-sm text-center">
+    <div class="container-fluid py-5">
+        <h1 class="display-4 fw-bold">🛒 Welcome to FreshMarket Grocery</h1>
+        <p class="col-md-8 fs-4 mx-auto text-muted">Your neighborhood destination for fresh produce, artisan bakery items, dairy, and pantry essentials.</p>
+        <div class="mt-4">
+            <a asp-controller="Customer" asp-action="Index" class="btn btn-success btn-lg px-4 me-2 shadow-sm">🛍️ Browse Storefront</a>
+            @if (!User.Identity?.IsAuthenticated ?? true)
+            {
+                <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary btn-lg px-4">Sign In</a>
+            }
         </div>
     </div>
 </div>
 
-<div class="row g-4">
-    <!-- Associate Panel -->
-    <div class="col-md-6">
-        <div class="card h-100 border-0 shadow-sm">
-            <div class="card-body">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-circle me-3">
-                        <span class="fs-4">🏷️</span>
-                    </div>
-                    <div>
-                        <h5 class="card-title mb-0 fw-bold">Associate Portal</h5>
-                        <small class="text-muted">Point of Sale Operations</small>
-                    </div>
-                </div>
-                <p class="card-text text-secondary">Record checkout purchases, auto-fill product categories, and generate real-time totals.</p>
-                <a asp-controller="Associate" asp-action="CreatePurchase" class="btn btn-primary w-100 fw-semibold py-2">
-                    Record New Sale
-                </a>
-            </div>
+<div class="row text-center g-4 mt-2">
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm p-3 border-0">
+            <div class="fs-1 mb-2">🍎</div>
+            <h3 class="fw-bold">Fresh Produce</h3>
+            <p class="text-muted">Hand-picked fruits and crisp vegetables delivered fresh daily.</p>
         </div>
     </div>
-
-    <!-- Admin / Manager Panel -->
-    <div class="col-md-6">
-        <div class="card h-100 border-0 shadow-sm">
-            <div class="card-body">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="bg-dark bg-opacity-10 text-dark p-3 rounded-circle me-3">
-                        <span class="fs-4">📦</span>
-                    </div>
-                    <div>
-                        <h5 class="card-title mb-0 fw-bold">Management Portal</h5>
-                        <small class="text-muted">Inventory & Audit Logs</small>
-                    </div>
-                </div>
-                <p class="card-text text-secondary">Monitor current stock levels, process incoming shipments, and inspect complete transaction history.</p>
-                <div class="d-flex gap-2">
-                    <a asp-controller="Admin" asp-action="StockOverview" class="btn btn-dark w-50 fw-semibold py-2">
-                        Inventory & Stock
-                    </a>
-                    <a asp-controller="Admin" asp-action="PurchaseHistory" class="btn btn-outline-dark w-50 fw-semibold py-2">
-                        Purchase History
-                    </a>
-                </div>
-            </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm p-3 border-0">
+            <div class="fs-1 mb-2">🥐</div>
+            <h3 class="fw-bold">Bakery &amp; Treats</h3>
+            <p class="text-muted">Warm, delicious artisan breads, croissants, and baked goods.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm p-3 border-0">
+            <div class="fs-1 mb-2">🥛</div>
+            <h3 class="fw-bold">Dairy &amp; Essentials</h3>
+            <p class="text-muted">Top-quality milk, eggs, cheeses, and everyday pantry staples.</p>
         </div>
     </div>
 </div>

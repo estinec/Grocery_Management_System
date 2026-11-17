@@ -10,7 +10,6 @@ using System.Text.Json;
 
 namespace Grocery_Management.Controllers;
 
-[Authorize(Roles = "Customer,Admin")]
 public class CustomerController(AppDbContext context, UserManager<ApplicationUser> userManager) : Controller
 {
     private readonly AppDbContext _context = context;
@@ -47,6 +46,8 @@ public class CustomerController(AppDbContext context, UserManager<ApplicationUse
     // 3. Add Item to Cart
     [HttpPost]
     [ValidateAntiForgeryToken]
+    
+    [Authorize(Roles = "Customer")]
     public async Task<IActionResult> AddToCart(int productId, int quantity = 1)
     {
         var product = await _context.Products.FindAsync(productId);
@@ -83,6 +84,8 @@ public class CustomerController(AppDbContext context, UserManager<ApplicationUse
     // 4. Remove Item from Cart
     [HttpPost]
     [ValidateAntiForgeryToken]
+    
+    [Authorize(Roles = "Customer")]
     public IActionResult RemoveFromCart(int productId)
     {
         var cart = GetCartSession();
@@ -94,6 +97,8 @@ public class CustomerController(AppDbContext context, UserManager<ApplicationUse
     // 5. Checkout / Place Order
     [HttpPost]
     [ValidateAntiForgeryToken]
+    
+    [Authorize(Roles = "Customer")]
     public async Task<IActionResult> Checkout()
     {
         var cart = GetCartSession();
@@ -146,6 +151,8 @@ public class CustomerController(AppDbContext context, UserManager<ApplicationUse
     }
 
     [HttpGet]
+    
+    [Authorize(Roles = "Customer")]
     public async Task<IActionResult> OrderConfirmation(int id)
     {
         var purchase = await _context.Purchases
@@ -159,6 +166,8 @@ public class CustomerController(AppDbContext context, UserManager<ApplicationUse
     }
 
     // Session Helpers
+    
+    [Authorize(Roles = "Customer")]
     private List<CartItemViewModel> GetCartSession()
     {
         var sessionData = HttpContext.Session.GetString(CartSessionKey);

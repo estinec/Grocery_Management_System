@@ -18,6 +18,29 @@ public class AdminController : Controller
         _context = context;
         _userManager = userManager;
     }
+    
+    [HttpGet]
+    public async Task<IActionResult> Index()
+    {
+        var associateRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "Associate");
+        var associateCount = associateRole != null
+            ? await _context.UserRoles.CountAsync(ur => ur.RoleId == associateRole.Id)
+            : 0;
+
+        ViewBag.TotalProducts = await _context.Products.CountAsync();
+        ViewBag.LowStockCount = await _context.Products.CountAsync(p => p.CurrentStock <= 10);
+        ViewBag.TotalOrders = await _context.Purchases.CountAsync();
+        ViewBag.TotalRevenue = await _context.Purchases.SumAsync(p => (decimal?)p.TotalPrice) ?? 0m;
+        ViewBag.AssociateCount = associateCount;
+
+        var recentPurchases = await _context.Purchases
+            .Include(p => p.Items)
+            .OrderByDescending(p => p.CreatedAt)
+            .Take(5)
+            .ToListAsync();
+
+        return View(recentPurchases);
+    }
 
     public async Task<IActionResult> StockOverview()
     {

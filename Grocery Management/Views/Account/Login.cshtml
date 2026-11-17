@@ -1,39 +1,67 @@
 @model Grocery_Management.Models.ViewModels.LoginViewModel
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Customer Sign In";
 }
 
-<div class="row justify-content-center mt-4">
+<div class="row justify-content-center mt-5">
     <div class="col-md-5">
-        <div class="card shadow-sm">
+        <div class="card shadow-sm border-0">
             <div class="card-body p-4">
-                <h2 class="text-center mb-4">Log in</h2>
+                <div class="text-center mb-4">
+                    <span class="fs-1">🛍️</span>
+                    <h2 class="fw-bold mt-2">Customer Sign In</h2>
+                    <p class="text-muted small">Welcome back! Sign in to access your online cart and order history.</p>
+                </div>
+
                 <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                     <div class="mb-3">
-                        <label asp-for="Email" class="form-label"></label>
-                        <input asp-for="Email" class="form-control" autocomplete="username" required />
+                        <label asp-for="Email" class="form-label fw-bold">Email Address</label>
+                        <input asp-for="Email" class="form-control" autocomplete="username" placeholder="name@example.com" required />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="Password" class="form-label"></label>
-                        <input asp-for="Password" class="form-control" autocomplete="current-password" required />
+                        <label asp-for="Password" class="form-label fw-bold">Password</label>
+                        <input asp-for="Password" class="form-control" autocomplete="current-password" placeholder="••••••••" required />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3 form-check">
                         <input asp-for="RememberMe" class="form-check-input" />
-                        <label asp-for="RememberMe" class="form-check-label"></label>
+                        <label asp-for="RememberMe" class="form-check-label text-muted">Remember me</label>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100 py-2 mb-3">Log in</button>
+                    <button type="submit" class="btn btn-success w-100 py-2 mb-3 fw-bold shadow-sm">Sign In</button>
 
-                    <div class="text-center">
-                        <p class="mb-0">Don't have an account? <a asp-action="Register">Register as a customer</a></p>
+                    <div class="text-center mt-4">
+                        <p class="mb-2 text-muted">Don't have an account? <a asp-action="Register" class="text-decoration-none fw-bold text-success">Register as a Customer</a></p>
+                        <hr class="my-3" />
+                        <p class="mb-0 text-muted small">Are you a store employee or manager? <a href="#" data-bs-toggle="modal" data-bs-target="#employeeLoginModal" class="text-decoration-none fw-bold">Login as Employee</a></p>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Employee Login Info Modal -->
+<div class="modal fade" id="employeeLoginModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">🔐 Employee &amp; Admin Sign In</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted">Staff members use this same sign-in portal. Enter your assigned work credentials below to automatically unlock your Associate POS or Admin Manager tools.</p>
+                <div class="alert alert-secondary small mb-0">
+                    <strong>Default Admin Account:</strong> <code>admin@grocery.com</code> / <code>Admin123!</code>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Got it</button>
             </div>
         </div>
     </div>

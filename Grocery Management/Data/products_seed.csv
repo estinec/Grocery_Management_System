@@ -1,0 +1,106 @@
+Category,Emoji,Name,UnitPrice,CurrentStock
+Produce,🍎,Honeycrisp Apples (1 lb),2.99,85
+Produce,🍌,Organic Bananas (Bunch),1.49,120
+Produce,🍓,Fresh Strawberries (16 oz),4.49,60
+Produce,🫐,Blueberries (1 pint),3.99,55
+Produce,🍇,Red Seedless Grapes (1 lb),3.29,70
+Produce,🍊,Navel Oranges (3 lb Bag),4.99,65
+Produce,🍋,Fresh Lemons (Each),0.79,110
+Produce,🥑,Hass Avocados (Each),1.79,90
+Produce,🍅,Roma Tomatoes (1 lb),2.29,80
+Produce,🥕,Baby Carrots (1 lb Bag),1.89,95
+Produce,🥦,Broccoli Crowns (1 lb),2.49,75
+Produce,🥬,Romaine Lettuce Hearts (3 ct),3.49,50
+Produce,🥒,English Cucumber (Each),1.69,85
+Produce,🫑,Red Bell Peppers (Each),1.99,70
+Produce,🧅,Yellow Onions (3 lb Bag),2.79,90
+Produce,🥔,Russet Potatoes (5 lb Bag),4.29,80
+Produce,🧄,Fresh Garlic Bulb (Each),0.89,130
+Produce,🍄,Cremini Mushrooms (8 oz),2.99,45
+Produce,🌽,Sweet Corn on the Cob (4 ct),3.99,50
+Produce,🍉,Seedless Watermelon (Whole),6.99,25
+Bakery,🥐,Butter Croissants (4 ct),4.99,40
+Bakery,🥖,Artisan French Baguette,2.99,35
+Bakery,🍞,Sliced Whole Wheat Bread,3.49,60
+Bakery,🥯,Plain Bagels (6 ct),3.99,55
+Bakery,🥯,Everything Bagels (6 ct),4.29,50
+Bakery,🧁,Blueberry Muffins (4 ct),4.79,30
+Bakery,🍩,Glazed Donuts (6 ct),5.49,35
+Bakery,🥨,Soft Pretzel Twists (4 ct),3.99,40
+Bakery,🫓,Garlic Naan Flatbread (4 ct),3.79,45
+Bakery,🥧,Homestyle Apple Pie,8.99,18
+Bakery,🍪,Chocolate Chip Cookies (12 ct),4.99,50
+Bakery,🧇,Belgian Waffles (6 ct),4.49,35
+Dairy & Eggs,🥛,Whole Milk (1 Gallon),4.29,65
+Dairy & Eggs,🥛,2% Reduced Fat Milk (1L),2.49,80
+Dairy & Eggs,🥚,Large Grade A Eggs (12 ct),3.99,90
+Dairy & Eggs,🥚,Organic Free-Range Eggs (12 ct),5.99,50
+Dairy & Eggs,🧈,Salted Sweet Cream Butter (1 lb),4.99,70
+Dairy & Eggs,🧀,Sharp Cheddar Cheese Block (8 oz),3.79,65
+Dairy & Eggs,🧀,Shredded Mozzarella (8 oz),3.49,75
+Dairy & Eggs,🧀,Grated Parmesan Cheese (5 oz),4.29,60
+Dairy & Eggs,🍨,Vanilla Greek Yogurt (32 oz),5.49,55
+Dairy & Eggs,🍶,Sour Cream (16 oz),2.49,60
+Dairy & Eggs,🥯,Plain Cream Cheese Brick (8 oz),2.99,70
+Dairy & Eggs,🥛,Heavy Whipping Cream (1 pint),3.69,45
+Meat & Seafood,🍗,Boneless Skinless Chicken Breast (1 lb),5.99,50
+Meat & Seafood,🍖,Lean Ground Beef (1 lb),6.49,45
+Meat & Seafood,🥓,Thick-Cut Smoked Bacon (12 oz),6.99,55
+Meat & Seafood,🌭,All-Beef Hot Dogs (8 ct),4.49,60
+Meat & Seafood,🥩,Ribeye Steak (12 oz),13.99,25
+Meat & Seafood,🍗,Chicken Drumsticks (2 lb Pack),5.49,40
+Meat & Seafood,🥪,Sliced Honey Deli Turkey (9 oz),4.99,55
+Meat & Seafood,🥪,Black Forest Deli Ham (9 oz),4.79,50
+Meat & Seafood,🐟,Fresh Atlantic Salmon Fillet (1 lb),11.99,30
+Meat & Seafood,🦐,Large Peeled Shrimp (1 lb),10.99,35
+Meat & Seafood,🦀,Imitation Crab Flakes (8 oz),3.49,40
+Meat & Seafood,🥩,Italian Pork Sausage Links (1 lb),5.79,40
+Pantry,🍝,Spaghetti Pasta (16 oz),1.69,110
+Pantry,🍝,Penne Rigate Pasta (16 oz),1.69,105
+Pantry,🥫,Marinara Pasta Sauce (24 oz),2.79,85
+Pantry,🍚,Jasmine White Rice (2 lb Bag),3.49,90
+Pantry,🫘,Black Beans Canned (15 oz),1.29,120
+Pantry,🥫,Crushed Tomatoes Canned (28 oz),2.19,95
+Pantry,🥣,Rolled Old-Fashioned Oats (18 oz),3.29,75
+Pantry,🥣,Honey Nut O's Cereal (15 oz),4.29,65
+Pantry,🥜,Creamy Peanut Butter (16 oz),3.49,80
+Pantry,🍓,Strawberry Fruit Jam (18 oz),3.29,70
+Pantry,🫒,Extra Virgin Olive Oil (16.9 oz),8.99,50
+Pantry,🍯,Pure Wildflower Honey (12 oz),5.49,60
+Pantry,🧂,Iodized Sea Salt (26 oz),1.49,100
+Pantry,🌶️,Ground Black Pepper (3 oz),2.99,85
+Pantry,🥞,Buttermilk Pancake Mix (32 oz),3.79,60
+Pantry,🍁,Pure Maple Syrup (12 oz),7.99,45
+Pantry,🥫,Chicken Noodle Soup (18.8 oz),2.29,90
+Pantry,🐟,Chunk Light Tuna in Water (5 oz),1.49,115
+Frozen,🍕,Frozen Pepperoni Pizza,6.49,45
+Frozen,🍨,Vanilla Bean Ice Cream (1.5 qt),4.99,40
+Frozen,🍫,Chocolate Fudge Ice Cream (1.5 qt),4.99,40
+Frozen,🍟,Crispy Crinkle-Cut French Fries (28 oz),3.79,55
+Frozen,🥦,Frozen Broccoli Florets (12 oz),2.19,70
+Frozen,🫛,Frozen Sweet Green Peas (12 oz),1.99,75
+Frozen,🫐,Frozen Mixed Berries (16 oz),4.79,50
+Frozen,🥟,Chicken & Vegetable Potstickers (20 oz),5.99,40
+Frozen,🧇,Homestyle Frozen Waffles (10 ct),3.29,60
+Frozen,🍗,Breaded Chicken Nuggets (24 oz),6.99,50
+Beverages,🍊,100% Pure Orange Juice (52 oz),4.29,65
+Beverages,🍎,Apple Juice (64 oz),3.49,70
+Beverages,☕,Medium Roast Ground Coffee (12 oz),7.99,55
+Beverages,🍵,Green Tea Bags (20 ct),3.29,75
+Beverages,💧,Spring Water Bottles (24 Pack),5.49,80
+Beverages,🫧,Lime Sparkling Water (12 Pack),4.99,60
+Beverages,🥤,Classic Cola (12 Pack Cans),6.99,65
+Beverages,🥛,Unsweetened Almond Milk (64 oz),3.79,55
+Beverages,🥥,Pure Coconut Water (1L),3.99,50
+Beverages,🍋,Fresh Squeezed Lemonade (52 oz),3.49,55
+Snacks,🥔,Classic Salted Potato Chips (8 oz),3.79,80
+Snacks,🌮,Restaurant Style Tortilla Chips (13 oz),3.99,75
+Snacks,🍿,Sea Salt Microwave Popcorn (6 Pack),4.49,65
+Snacks,🥨,Mini Twisted Pretzels (16 oz),3.49,70
+Snacks,🥜,Roasted Salted Almonds (12 oz),6.49,55
+Snacks,🍫,Milk Chocolate Bar (3.5 oz),2.49,95
+Snacks,🍪,Chocolate Sandwich Cookies (14.3 oz),4.29,70
+Snacks,🧀,Cheddar Cheese Crackers (12.4 oz),3.99,75
+Snacks,🥣,Oats & Honey Granola Bars (6 ct),3.49,80
+Snacks,🌶️,Chunky Medium Salsa (16 oz),3.29,70
+Snacks,🥑,Classic Guacamole Tub (8 oz),4.49,40

@@ -14,6 +14,9 @@ public class Product
     [StringLength(100)]
     public string Name { get; set; } = string.Empty;
 
+    [StringLength(10)]
+    public string Emoji { get; set; } = "🛒";
+
     [Column(TypeName = "decimal(18,2)")]
     [Range(0.01, 10000.00)]
     public decimal UnitPrice { get; set; }

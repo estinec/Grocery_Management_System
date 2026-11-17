@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Grocery_Management.Migrations
 {
     /// <inheritdoc />
-    public partial class AddIdentityAndRoles : Migration
+    public partial class AddProductCsvSeed : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -196,6 +196,7 @@ namespace Grocery_Management.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     CategoryId = table.Column<int>(type: "INTEGER", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Emoji = table.Column<string>(type: "TEXT", maxLength: 10, nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CurrentStock = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -249,11 +250,11 @@ namespace Grocery_Management.Migrations
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "CategoryId", "CurrentStock", "Name", "UnitPrice" },
+                columns: new[] { "Id", "CategoryId", "CurrentStock", "Emoji", "Name", "UnitPrice" },
                 values: new object[,]
                 {
-                    { 1, 1, 100, "Bagel", 1.50m },
-                    { 2, 2, 50, "Milk (1L)", 3.99m }
+                    { 1, 1, 100, "🛒", "Bagel", 1.50m },
+                    { 2, 2, 50, "🛒", "Milk (1L)", 3.99m }
                 });
 
             migrationBuilder.CreateIndex(

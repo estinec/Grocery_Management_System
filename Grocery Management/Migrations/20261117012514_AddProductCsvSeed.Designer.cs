@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Grocery_Management.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261117001403_AddIdentityAndRoles")]
-    partial class AddIdentityAndRoles
+    [Migration("20261117012514_AddProductCsvSeed")]
+    partial class AddProductCsvSeed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -132,6 +132,11 @@ namespace Grocery_Management.Migrations
                     b.Property<int>("CurrentStock")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Emoji")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -152,6 +157,7 @@ namespace Grocery_Management.Migrations
                             Id = 1,
                             CategoryId = 1,
                             CurrentStock = 100,
+                            Emoji = "🛒",
                             Name = "Bagel",
                             UnitPrice = 1.50m
                         },
@@ -160,6 +166,7 @@ namespace Grocery_Management.Migrations
                             Id = 2,
                             CategoryId = 2,
                             CurrentStock = 50,
+                            Emoji = "🛒",
                             Name = "Milk (1L)",
                             UnitPrice = 3.99m
                         });

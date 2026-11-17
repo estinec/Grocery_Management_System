@@ -1,0 +1,62 @@
+@model List<Grocery_Management.Models.ViewModels.CartItemViewModel>
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<div class="container mt-4">
+    <h2>🛒 Your Shopping Cart</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <p class="lead text-muted">Your cart is currently empty.</p>
+            <a asp-action="Index" class="btn btn-primary mt-3">Continue Shopping</a>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive mt-4">
+            <table class="table table-striped align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <span class="fs-4 me-2">@item.Emoji</span>
+                                <span class="fw-bold">@item.ProductName</span>
+                            </td>
+                            <td>$@item.UnitPrice.ToString("0.00")</td>
+                            <td>@item.Quantity</td>
+                            <td class="fw-bold text-success">$@item.TotalPrice.ToString("0.00")</td>
+                            <td>
+                                <form asp-action="RemoveFromCart" method="post">
+                                    <input type="hidden" name="productId" value="@item.ProductId" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4 p-3 bg-light rounded shadow-sm">
+            <h3>Total: <span class="text-success">$@Model.Sum(x => x.TotalPrice).ToString("0.00")</span></h3>
+            <div>
+                <a asp-action="Index" class="btn btn-outline-secondary me-2">Keep Shopping</a>
+                <form asp-action="Checkout" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-success btn-lg">Place Order &amp; Checkout</button>
+                </form>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,47 @@
+@model Grocery_Management.Models.Purchase
+@{
+    ViewData["Title"] = "Order Confirmation";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm p-4">
+        <div class="text-center mb-4">
+            <h1 class="text-success">🎉 Order Confirmed!</h1>
+            <p class="lead">Thank you for shopping with us. Your online order has been placed successfully.</p>
+            <p class="text-muted"><strong>Order ID:</strong> #@Model.Id | <strong>Placed UTC:</strong> @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</p>
+        </div>
+
+        <hr />
+
+        <h5>Order Summary</h5>
+        <table class="table table-bordered mt-3">
+            <thead class="table-light">
+            <tr>
+                <th>Product</th>
+                <th>Unit Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Product?.Emoji @item.Product?.Name</td>
+                    <td>$@item.UnitPrice.ToString("0.00")</td>
+                    <td>@item.Quantity</td>
+                    <td>$@((item.UnitPrice * item.Quantity).ToString("0.00"))</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+        <div class="text-end mt-3">
+            <h4>Total Paid: <span class="text-success">$@Model.TotalPrice.ToString("0.00")</span></h4>
+        </div>
+
+        <div class="text-center mt-4">
+            <a asp-action="Index" class="btn btn-primary">Continue Shopping</a>
+        </div>
+    </div>
+</div>

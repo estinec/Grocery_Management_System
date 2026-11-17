@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Grocery_Management.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261117012514_AddProductCsvSeed")]
-    partial class AddProductCsvSeed
+    [Migration("20261117183643_Updated")]
+    partial class Updated
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -111,12 +111,67 @@ namespace Grocery_Management.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Bakery"
+                            Name = "Appliancies"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Dairy"
+                            Name = "Bakery"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Beverages"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Canned and Jarred"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Dairy and Eggs"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Frozen fruits"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Household"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Meat and Seafood"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Other"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Pantry"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Personal Care"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Produce"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Snacks"
                         });
                 });
 
@@ -150,26 +205,6 @@ namespace Grocery_Management.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 1,
-                            CurrentStock = 100,
-                            Emoji = "🛒",
-                            Name = "Bagel",
-                            UnitPrice = 1.50m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 2,
-                            CurrentStock = 50,
-                            Emoji = "🛒",
-                            Name = "Milk (1L)",
-                            UnitPrice = 3.99m
-                        });
                 });
 
             modelBuilder.Entity("Grocery_Management.Models.Purchase", b =>

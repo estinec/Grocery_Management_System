@@ -30,13 +30,21 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Category>().HasData(
-            new Category { Id = 1, Name = "Bakery" },
-            new Category { Id = 2, Name = "Dairy" }
+            
+            new Category { Id = 1, Name = "Appliancies" },
+            new Category { Id = 2, Name = "Bakery" },
+            new Category { Id = 3, Name = "Beverages" },
+            new Category { Id = 4, Name = "Canned and Jarred" },
+            new Category { Id = 5, Name = "Dairy and Eggs" },
+            new Category { Id = 6, Name = "Frozen fruits" },
+            new Category { Id = 7, Name = "Household" },
+            new Category { Id = 8, Name = "Meat and Seafood" },
+            new Category { Id = 9, Name = "Other" },
+            new Category { Id = 10, Name = "Pantry" },
+            new Category { Id = 11, Name = "Personal Care" },
+            new Category { Id = 12, Name = "Produce" },
+            new Category { Id = 13, Name = "Snacks" }
         );
-
-        modelBuilder.Entity<Product>().HasData(
-            new Product { Id = 1, CategoryId = 1, Name = "Bagel", UnitPrice = 1.50m, CurrentStock = 100 },
-            new Product { Id = 2, CategoryId = 2, Name = "Milk (1L)", UnitPrice = 3.99m, CurrentStock = 50 }
-        );
+        
     }
 }

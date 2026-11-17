@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Grocery_Management.Migrations
 {
     /// <inheritdoc />
-    public partial class AddProductCsvSeed : Migration
+    public partial class Updated : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -244,17 +244,19 @@ namespace Grocery_Management.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Bakery" },
-                    { 2, "Dairy" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "Id", "CategoryId", "CurrentStock", "Emoji", "Name", "UnitPrice" },
-                values: new object[,]
-                {
-                    { 1, 1, 100, "🛒", "Bagel", 1.50m },
-                    { 2, 2, 50, "🛒", "Milk (1L)", 3.99m }
+                    { 1, "Appliancies" },
+                    { 2, "Bakery" },
+                    { 3, "Beverages" },
+                    { 4, "Canned and Jarred" },
+                    { 5, "Dairy and Eggs" },
+                    { 6, "Frozen fruits" },
+                    { 7, "Household" },
+                    { 8, "Meat and Seafood" },
+                    { 9, "Other" },
+                    { 10, "Pantry" },
+                    { 11, "Personal Care" },
+                    { 12, "Produce" },
+                    { 13, "Snacks" }
                 });
 
             migrationBuilder.CreateIndex(

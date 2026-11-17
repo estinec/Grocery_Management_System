@@ -1,9 +1,10 @@
 using Grocery_Management.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Grocery_Management.Data;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<ApplicationUser>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -28,7 +29,6 @@ public class AppDbContext : DbContext
             .HasForeignKey(pi => pi.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Seed basic Categories & Products
         modelBuilder.Entity<Category>().HasData(
             new Category { Id = 1, Name = "Bakery" },
             new Category { Id = 2, Name = "Dairy" }

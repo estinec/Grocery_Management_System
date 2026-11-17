@@ -3,9 +3,10 @@ using Grocery_Management.Models;
 using Grocery_Management.Models.ViewModels;
 using Grocery_Management.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Grocery_Management.Controllers;
-
+[Authorize(Roles = "Associate")]
 public class AssociateController : Controller
 {
     private readonly AppDbContext _context;
@@ -70,7 +71,8 @@ public class AssociateController : Controller
             var purchase = new Purchase
             {
                 CreatedAt = DateTime.UtcNow,
-                TotalPrice = 0m
+                TotalPrice = 0m,
+                AssociateId = User.Identity?.Name ?? "Associate_Default"
             };
 
             foreach (var item in groupedItems)

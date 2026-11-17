@@ -21,29 +21,66 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light" href="#" id="associateMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Associate
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="associateMenu">
-                                <li>
-                                    <a class="dropdown-item" asp-controller="Associate" asp-action="CreatePurchase">Record Sale</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light" href="#" id="adminMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Admin / Manager
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="adminMenu">
-                                <li>
-                                    <a class="dropdown-item" asp-controller="Admin" asp-action="StockOverview">Inventory & Stock</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-controller="Admin" asp-action="PurchaseHistory">Purchase History</a>
-                                </li>
-                            </ul>
-                        </li>
+                        @if (User.IsInRole("Associate") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="associateMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Associate
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="associateMenu">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Associate" asp-action="CreatePurchase">Record Sale</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="adminMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Admin / Manager
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="adminMenu">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Admin" asp-action="StockOverview">Inventory & Stock</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Admin" asp-action="PurchaseHistory">Purchase History</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Admin" asp-action="ManageEmployees">Manage Associates</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+
+                    <!-- Login / Logout Navigation Section -->
+                    <ul class="navbar-nav">
+                        @using Microsoft.AspNetCore.Identity
+                        @inject SignInManager<ApplicationUser> SignInManager
+                        @inject UserManager<ApplicationUser> UserManager
+
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item d-flex align-items-center me-3 text-light">
+                                <span>Hello, @User.Identity?.Name</span>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="form-inline">
+                                    <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item me-2">
+                                <a class="btn btn-outline-light btn-sm" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-warning btn-sm" asp-controller="Account" asp-action="Register">Register</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -58,7 +95,7 @@
 
     <footer class="border-top footer text-muted text-center py-3 mt-auto">
         <div class="container">
-            &copy; @DateTime.Now.Year - Grocery Management System
+            &copy; @DateTime.Now.Year Grocery Management System
         </div>
     </footer>
 

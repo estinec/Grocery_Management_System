@@ -10,10 +10,23 @@ public class AppDbContext : DbContext
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Product> Products => Set<Product>();
     public DbSet<Purchase> Purchases => Set<Purchase>();
+    public DbSet<PurchaseItem> PurchaseItems => Set<PurchaseItem>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<PurchaseItem>()
+            .HasOne(pi => pi.Purchase)
+            .WithMany(p => p.Items)
+            .HasForeignKey(pi => pi.PurchaseId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<PurchaseItem>()
+            .HasOne(pi => pi.Product)
+            .WithMany(p => p.PurchaseItems)
+            .HasForeignKey(pi => pi.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         // Seed basic Categories & Products
         modelBuilder.Entity<Category>().HasData(

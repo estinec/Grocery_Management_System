@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Grocery_Management.Models;
+using Grocery_Management.Models.ViewModels;
 using Grocery_Management.Data;
 using Microsoft.EntityFrameworkCore;
+
 namespace Grocery_Management.Controllers;
 
 public class AssociateController : Controller
@@ -16,8 +18,8 @@ public class AssociateController : Controller
     [HttpGet]
     public async Task<IActionResult> CreatePurchase()
     {
-        ViewBag.Products = await _context.Products.Include(p => p.Category).ToListAsync();
-        return View();
+        ViewBag.Products = await _context.Products.Include(p => p.Category).OrderBy(p => p.Name).ToListAsync();
+        return View(new PosCheckoutViewModel());
     }
 
     [HttpGet]
@@ -25,39 +27,95 @@ public class AssociateController : Controller
     {
         var product = await _context.Products.Include(p => p.Category)
             .FirstOrDefaultAsync(p => p.Id == id);
-            
+
         if (product == null) return NotFound();
 
-        return Json(new { 
-            category = product.Category?.Name, 
+        return Json(new
+        {
+            category = product.Category?.Name,
             unitPrice = product.UnitPrice,
-            currentStock = product.CurrentStock 
+            currentStock = product.CurrentStock
         });
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreatePurchase(Purchase purchase)
+    public async Task<IActionResult> CreatePurchase(PosCheckoutViewModel model)
     {
-        var product = await _context.Products.FindAsync(purchase.ProductId);
-        if (product == null) return NotFound();
+        var validItems = model.Items?
+            .Where(i => i.ProductId > 0 && i.Quantity > 0)
+            .ToList();
 
-        if (purchase.Quantity > product.CurrentStock)
+        if (validItems == null || !validItems.Any())
         {
-            ModelState.AddModelError("Quantity", $"Insufficient stock. Only {product.CurrentStock} left.");
+            ModelState.AddModelError("", "Please add at least one product to the sale.");
+            ViewBag.Products = await _context.Products.Include(p => p.Category).OrderBy(p => p.Name).ToListAsync();
+            return View(model);
         }
 
-        if (ModelState.IsValid)
+        // Merge duplicate product rows if selected twice
+        var groupedItems = validItems
+            .GroupBy(i => i.ProductId)
+            .Select(g => new CartItemInput
+            {
+                ProductId = g.Key,
+                Quantity = g.Sum(x => x.Quantity)
+            })
+            .ToList();
+
+        using var transaction = await _context.Database.BeginTransactionAsync();
+
+        try
         {
-            purchase.TotalPrice = product.UnitPrice * purchase.Quantity;
-            product.CurrentStock -= purchase.Quantity;
+            var purchase = new Purchase
+            {
+                CreatedAt = DateTime.UtcNow,
+                TotalPrice = 0m
+            };
+
+            foreach (var item in groupedItems)
+            {
+                var product = await _context.Products.FindAsync(item.ProductId);
+                if (product == null)
+                {
+                    ModelState.AddModelError("", "Selected product was not found.");
+                    ViewBag.Products = await _context.Products.Include(p => p.Category).OrderBy(p => p.Name).ToListAsync();
+                    return View(model);
+                }
+
+                if (item.Quantity > product.CurrentStock)
+                {
+                    ModelState.AddModelError("", $"Insufficient stock for '{product.Name}'. Only {product.CurrentStock} left.");
+                    ViewBag.Products = await _context.Products.Include(p => p.Category).OrderBy(p => p.Name).ToListAsync();
+                    return View(model);
+                }
+
+                product.CurrentStock -= item.Quantity;
+
+                var purchaseItem = new PurchaseItem
+                {
+                    ProductId = product.Id,
+                    Quantity = item.Quantity,
+                    UnitPrice = product.UnitPrice
+                };
+
+                purchase.TotalPrice += purchaseItem.Subtotal;
+                purchase.Items.Add(purchaseItem);
+            }
 
             _context.Purchases.Add(purchase);
             await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+
+            TempData["Success"] = $"Receipt #{purchase.Id} recorded! Total: ${purchase.TotalPrice:F2}";
             return RedirectToAction(nameof(CreatePurchase));
         }
-
-        ViewBag.Products = await _context.Products.Include(p => p.Category).ToListAsync();
-        return View(purchase);
+        catch
+        {
+            await transaction.RollbackAsync();
+            ModelState.AddModelError("", "An error occurred while saving the sale.");
+            ViewBag.Products = await _context.Products.Include(p => p.Category).OrderBy(p => p.Name).ToListAsync();
+            return View(model);
+        }
     }
 }

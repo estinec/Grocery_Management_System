@@ -23,5 +23,5 @@ public class Product
 
     // Navigation properties
     public Category? Category { get; set; }
-    public ICollection<Purchase> Purchases { get; set; } = new List<Purchase>();
+    public ICollection<PurchaseItem> PurchaseItems { get; set; } = new List<PurchaseItem>();
 }

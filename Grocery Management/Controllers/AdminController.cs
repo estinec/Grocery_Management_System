@@ -16,8 +16,34 @@ public class AdminController : Controller
 
     public async Task<IActionResult> StockOverview()
     {
-        var products = await _context.Products.Include(p => p.Category).ToListAsync();
+        var products = await _context.Products
+            .Include(p => p.Category)
+            .OrderBy(p => p.Name)
+            .ToListAsync();
         return View(products);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> CreateProduct()
+    {
+        ViewBag.Categories = await _context.Categories.OrderBy(c => c.Name).ToListAsync();
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreateProduct(Product product)
+    {
+        if (ModelState.IsValid)
+        {
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
+            TempData["Success"] = $"Product '{product.Name}' added successfully.";
+            return RedirectToAction(nameof(StockOverview));
+        }
+
+        ViewBag.Categories = await _context.Categories.OrderBy(c => c.Name).ToListAsync();
+        return View(product);
     }
 
     [HttpPost]
@@ -29,6 +55,7 @@ public class AdminController : Controller
         {
             product.CurrentStock += additionalStock;
             await _context.SaveChangesAsync();
+            TempData["Success"] = $"Added {additionalStock} units to {product.Name}.";
         }
         return RedirectToAction(nameof(StockOverview));
     }
@@ -36,7 +63,8 @@ public class AdminController : Controller
     public async Task<IActionResult> PurchaseHistory()
     {
         var purchases = await _context.Purchases
-            .Include(p => p.Product)
+            .Include(p => p.Items)
+                .ThenInclude(i => i.Product)
             .OrderByDescending(p => p.CreatedAt)
             .ToListAsync();
         return View(purchases);

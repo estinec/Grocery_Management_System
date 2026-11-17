@@ -1,65 +1,140 @@
-@model Grocery_Management.Models.Purchase
+@model Grocery_Management.Models.ViewModels.PosCheckoutViewModel
+@{
+    ViewData["Title"] = "Record New Sale";
+    var products = (IEnumerable<Grocery_Management.Models.Product>)ViewBag.Products;
+}
 
 <h2>Record New Sale</h2>
 
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
 <form asp-action="CreatePurchase" method="post">
-    <div class="mb-3">
-        <label class="form-label">Select Product</label>
-        <select id="productSelect" asp-for="ProductId" class="form-select" required>
-            <option value="">-- Choose Product --</option>
-            @foreach (var p in (IEnumerable<Grocery_Management.Models.Product>)ViewBag.Products)
-            {
-                <option value="@p.Id">@p.Name</option>
-            }
-        </select>
+    <table class="table table-bordered align-middle mt-3" id="cartTable">
+        <thead class="table-light">
+            <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th style="width: 130px;">Unit Price</th>
+                <th style="width: 120px;">Quantity</th>
+                <th style="width: 140px;">Subtotal</th>
+                <th style="width: 90px;">Action</th>
+            </tr>
+        </thead>
+        <tbody id="cartBody">
+            <tr>
+                <td>
+                    <select name="Items[0].ProductId" class="form-select product-select" onchange="onProductChange(this)" required>
+                        <option value="">-- Choose Product --</option>
+                        @foreach (var p in products)
+                        {
+                            <option value="@p.Id" disabled="@(p.CurrentStock <= 0)">
+                                @p.Name (Stock: @p.CurrentStock)
+                            </option>
+                        }
+                    </select>
+                </td>
+                <td><input type="text" class="form-control category-display" readonly disabled /></td>
+                <td><input type="text" class="form-control price-display" data-raw-price="0" readonly disabled /></td>
+                <td><input type="number" name="Items[0].Quantity" class="form-control qty-input" min="1" value="1" oninput="calculateGrandTotal()" required /></td>
+                <td class="line-subtotal fw-bold">$0.00</td>
+                <td><button type="button" class="btn btn-sm btn-outline-danger w-100" onclick="removeRow(this)">Remove</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between align-items-center my-3">
+        <button type="button" class="btn btn-secondary" onclick="addRow()">+ Add Item</button>
+        <h4 class="mb-0">Total Price: <span id="grandTotalDisplay" class="text-success fw-bold">$0.00</span></h4>
     </div>
 
-    <div class="mb-3">
-        <label class="form-label">Category</label>
-        <input type="text" id="categoryDisplay" class="form-control" readonly disabled />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Unit Price ($)</label>
-        <input type="text" id="unitPriceDisplay" class="form-control" readonly disabled />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Quantity</label>
-        <input type="number" id="quantityInput" asp-for="Quantity" min="1" value="1" class="form-control" required />
-        <span asp-validation-for="Quantity" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Total Price ($)</label>
-        <input type="text" id="totalPriceDisplay" class="form-control fw-bold" readonly />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit Sale</button>
+    <button type="submit" class="btn btn-primary btn-lg w-100">Submit Sale</button>
 </form>
 
 @section Scripts {
     <script>
-        let currentUnitPrice = 0;
+        let rowIndex = 1;
 
-        document.getElementById('productSelect').addEventListener('change', async function() {
-            const id = this.value;
-            if (!id) return;
+        async function onProductChange(selectEl) {
+            const row = selectEl.closest('tr');
+            const id = selectEl.value;
+            const catInput = row.querySelector('.category-display');
+            const priceInput = row.querySelector('.price-display');
+
+            if (!id) {
+                catInput.value = '';
+                priceInput.value = '';
+                priceInput.dataset.rawPrice = '0';
+                calculateGrandTotal();
+                return;
+            }
 
             const res = await fetch(`/Associate/GetProductDetails/${id}`);
             const data = await res.json();
 
-            document.getElementById('categoryDisplay').value = data.category;
-            document.getElementById('unitPriceDisplay').value = data.unitPrice.toFixed(2);
-            currentUnitPrice = data.unitPrice;
-            calculateTotal();
-        });
+            catInput.value = data.category || '';
+            priceInput.value = '$' + data.unitPrice.toFixed(2);
+            priceInput.dataset.rawPrice = data.unitPrice;
+            calculateGrandTotal();
+        }
 
-        document.getElementById('quantityInput').addEventListener('input', calculateTotal);
+        function addRow() {
+            const tbody = document.getElementById('cartBody');
+            const newRow = tbody.rows[0].cloneNode(true);
 
-        function calculateTotal() {
-            const qty = parseInt(document.getElementById('quantityInput').value) || 0;
-            document.getElementById('totalPriceDisplay').value = (currentUnitPrice * qty).toFixed(2);
+            const select = newRow.querySelector('.product-select');
+            select.name = `Items[${rowIndex}].ProductId`;
+            select.selectedIndex = 0;
+
+            newRow.querySelector('.category-display').value = '';
+            const priceInput = newRow.querySelector('.price-display');
+            priceInput.value = '';
+            priceInput.dataset.rawPrice = '0';
+
+            const qtyInput = newRow.querySelector('.qty-input');
+            qtyInput.name = `Items[${rowIndex}].Quantity`;
+            qtyInput.value = 1;
+
+            newRow.querySelector('.line-subtotal').innerText = '$0.00';
+            tbody.appendChild(newRow);
+            rowIndex++;
+        }
+
+        function removeRow(btn) {
+            const tbody = document.getElementById('cartBody');
+            if (tbody.rows.length > 1) {
+                btn.closest('tr').remove();
+                reindexRows();
+                calculateGrandTotal();
+            }
+        }
+
+        function reindexRows() {
+            const rows = document.querySelectorAll('#cartBody tr');
+            rows.forEach((row, idx) => {
+                row.querySelector('.product-select').name = `Items[${idx}].ProductId`;
+                row.querySelector('.qty-input').name = `Items[${idx}].Quantity`;
+            });
+            rowIndex = rows.length;
+        }
+
+        function calculateGrandTotal() {
+            let grandTotal = 0;
+            document.querySelectorAll('#cartBody tr').forEach(row => {
+                const price = parseFloat(row.querySelector('.price-display').dataset.rawPrice) || 0;
+                const qty = parseInt(row.querySelector('.qty-input').value) || 0;
+                const subtotal = price * qty;
+                row.querySelector('.line-subtotal').innerText = '$' + subtotal.toFixed(2);
+                grandTotal += subtotal;
+            });
+            document.getElementById('grandTotalDisplay').innerText = '$' + grandTotal.toFixed(2);
         }
     </script>
 }

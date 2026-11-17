@@ -1,8 +1,25 @@
 @model IEnumerable<Grocery_Management.Models.Product>
+@{
+    ViewData["Title"] = "Inventory Management";
+}
 
-<h2>Inventory Management</h2>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Inventory Management</h2>
+    <div>
+        <a asp-action="PurchaseHistory" class="btn btn-outline-secondary me-2">Purchase History</a>
+        <a asp-action="CreateProduct" class="btn btn-success">+ Add New Product</a>
+    </div>
+</div>
 
-<table class="table table-striped table-bordered mt-3">
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<table class="table table-striped table-bordered mt-3 align-middle">
     <thead>
     <tr>
         <th>Product Name</th>

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Grocery_Management.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261105235119_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20261116194057_MultiItemPosSchema")]
+    partial class MultiItemPosSchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -106,20 +106,39 @@ namespace Grocery_Management.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Purchases");
+                });
+
+            modelBuilder.Entity("Grocery_Management.Models.PurchaseItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PurchaseId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("TotalPrice")
+                    b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Purchases");
+                    b.HasIndex("PurchaseId");
+
+                    b.ToTable("PurchaseItems");
                 });
 
             modelBuilder.Entity("Grocery_Management.Models.Product", b =>
@@ -133,15 +152,23 @@ namespace Grocery_Management.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Grocery_Management.Models.Purchase", b =>
+            modelBuilder.Entity("Grocery_Management.Models.PurchaseItem", b =>
                 {
                     b.HasOne("Grocery_Management.Models.Product", "Product")
-                        .WithMany("Purchases")
+                        .WithMany("PurchaseItems")
                         .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Grocery_Management.Models.Purchase", "Purchase")
+                        .WithMany("Items")
+                        .HasForeignKey("PurchaseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Product");
+
+                    b.Navigation("Purchase");
                 });
 
             modelBuilder.Entity("Grocery_Management.Models.Category", b =>
@@ -151,7 +178,12 @@ namespace Grocery_Management.Migrations
 
             modelBuilder.Entity("Grocery_Management.Models.Product", b =>
                 {
-                    b.Navigation("Purchases");
+                    b.Navigation("PurchaseItems");
+                });
+
+            modelBuilder.Entity("Grocery_Management.Models.Purchase", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }
